@@ -5,13 +5,17 @@ import pandas as pd
 dataset = pd.read_csv("../input/covid19-global-forecasting-week-1/train.csv")
 ds = pd.read_csv("../input/covid19-global-forecasting-week-1/test.csv")
 
-# Clean the Data; Dealing with missing latitude & longitude values for Aruba by directly importing those values
+# Cleaning the data
+# Dealing with missing latitude & longitude values for Aruba by directly importing those values
+# Filling in missing province/state with the corresponding country.
+
 dataset['Province/State'] = dataset['Province/State'].fillna(dataset['Country/Region'])
 ds['Province/State'] = ds['Province/State'].fillna(ds['Country/Region'])
 
 dataset['Lat'] = dataset['Lat'].fillna(value = 12)
 dataset['Long'] = dataset['Long'].fillna(value = 70)
 
+k = dataset[dataset['Lat'].isna()]  # Checking which country is missing latitude & longitude values- Aruba
 ds['Lat'] = ds['Lat'].fillna(value = 12)
 ds['Long'] = ds['Long'].fillna(value = 70)
 
@@ -55,10 +59,10 @@ Xx = ct.fit_transform(Xx).toarray()
 # Scaling - Standardization
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
-X[:, :439] = sc.fit_transform(X[:, :439])
+X[:, :439] = sc.fit_transform(X[:, :439]) # Scaling applied to all columns except the last 2 columns- Day & Month
 Xx[:, :439] = sc.transform(Xx[:, :439])
 
-# Building the RF Regression Model - Fitting on the training dataset
+# Fitting the Decision Tree Regression Model on the training dataset
 from sklearn.tree import DecisionTreeRegressor
 regressor = DecisionTreeRegressor(random_state = 1)
 regressor.fit(X, y)
