@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 
 # Importing the datasets
-dataset = pd.read_csv("../input/covid19-global-forecasting-week-1/train.csv")
-ds = pd.read_csv("../input/covid19-global-forecasting-week-1/test.csv")
+dataset = pd.read_csv("train.csv")
+ds = pd.read_csv("test.csv")
 
 # Cleaning the data
 # Dealing with missing latitude & longitude values for Aruba by directly importing those values
@@ -52,9 +52,7 @@ ct = ColumnTransformer(
     remainder='passthrough'                                         
 )
 X = ct.fit_transform(X).toarray()
-#X = np.delete(X, [273, 437], axis = 1)
 Xx = ct.fit_transform(Xx).toarray()
-#Xx = np.delete(Xx, [273, 437], axis = 1)
 
 # Scaling - Standardization
 from sklearn.preprocessing import StandardScaler
